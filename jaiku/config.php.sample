@@ -1,7 +1,6 @@
 <?php
 
-$jaiku_username = "username";
-$jaiku_apikey = "apikey";
+$ekey = "Ericsson API key";
 
 // MySQL Connection
 $mysql_server = "localhost";

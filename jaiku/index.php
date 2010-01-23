@@ -4,9 +4,31 @@ include("config.php");
 
 // If receiving SMS
 if(isset($_GET['from'])){
-	require_once("class.jaiku.php");
-	$j = new Jaiku($jaiku_username,$jaiku_apikey);
-	$j->UpdatePresence($_GET['message']);
+	$key = $ekey;
+	
+	$from = $_GET['from'];
+	$time = $_GET['time'];
+	$message = $_GET['message'];
+	$hmac = $_GET['hmac'];
+	
+	$hmac_message = $from . $time . $message;
+	$hmac_local = base64_encode(hash_hmac('sha1', $hmac_message, $key,true));
+	
+	if($hmac_message == $hmac_local){
+		$sql = "SELECT * FROM users WHERE number=$from";
+		$result = mysql_query($sql) or die("SQL: $sql <br />".mysql_error());
+		while ($r = mysql_fetch_array($result, MYSQL_BOTH)) {
+			$user = array(
+			$r['number'],
+			$r['user'],
+			$r['key']
+			);
+		}
+	
+		require_once("class.jaiku.php");
+		$j = new Jaiku($user[1],$user[2]);
+		$j->UpdatePresence($message);
+	}
 }
 
 if(isset($_POST['submit'])){
@@ -38,7 +60,7 @@ if(isset($_POST['submit'])){
 		'$number',  '$user',  '$key'
 		);
 		";
-		$result2 = mysql_query($sql2) or die("SQL: $sql2 <br>".mysql_error());
+		$result2 = mysql_query($sql2) or die("SQL: $sql2 <br />".mysql_error());
 	}
 	
 }
