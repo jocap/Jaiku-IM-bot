@@ -1,4 +1,4 @@
-Ericsson's API for receiving SMSes: https://labs.ericsson.com/apis/sms-send-and-receive/documentation
+A Jaiku SMS Service using Ericsson's API for receiving SMSes: https://labs.ericsson.com/apis/sms-send-and-receive/documentation
 
-Couldn't get it to work, though. It seems it doesn't forward to my SMS callback URL.
+Can't get it to work, though. It seems it doesn't forward to my SMS callback URL when sending "smsjaik [MESSAGE]" to 72223.
 (and, smsjaik is my Service ID at Ericsson Labs.)
