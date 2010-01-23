@@ -1,21 +1,46 @@
 <?php
 
+include("config.php");
+
 // If receiving SMS
 if(isset($_GET['from'])){
 	require_once("class.jaiku.php");
-	include("config.php");
 	$j = new Jaiku($jaiku_username,$jaiku_apikey);
 	$j->UpdatePresence($_GET['message']);
 }
 
 if(isset($_POST['submit'])){
-	$message = $_POST['message'];
+	$_POST = db_escape($_POST);
 	$user = $_POST['username'];
 	$key = $_POST['key'];
+	$number = $_POST['number'];
+	
+	// In this example, we've got 1 table inside our database; `users`, containing 3 fields; `number`, `user` and `key`.
 
-	require_once("class.jaiku.php");
-	$j = new Jaiku($user,$key);
-	$j->UpdatePresence($message);
+	$sql = "SELECT COUNT(*) FROM $mysql_database.users WHERE number=$number";
+	$result = mysql_query($sql);
+	if (mysql_result($result, 0) > 0) {
+		?>
+		<script type="text/javascript">
+		alert("You're already using your phone number with Jaiku SMS!");
+		</script>
+		<?php
+		$already = true;
+	}
+	
+	if($already!=true){
+		$sql2 = "INSERT INTO  `$mysql_database`.`users` (
+		`number` ,
+		`user` ,
+		`key`
+		)
+		VALUES (
+		'$number',  '$user',  '$key'
+		);
+		";
+		$result2 = mysql_query($sql2) or die("SQL: $sql2 <br>".mysql_error());
+	}
+	
 }
 
 ?>
@@ -47,11 +72,11 @@ if(isset($_POST['submit'])){
 	<h1 class="title">Jaiku SMS Service</h1>
 	<div class="content">
 		<form class="form" method="post" action="index.php">
-			<span>Message:</span><br />
-			<input type="text" id="message" name="message" value="" /><br />
-			<span>Username:</span><br />
+			<span>Mobile number:</span><br />
+			<input type="text" id="number" name="number" value="" /><br />
+			<span>Jaiku Username:</span><br />
 			<input type="text" id="username" name="username" value="" /><br />
-			<span>API-key:</span><br />
+			<span>Jaiku API-key:</span><br />
 			<input type="text" id="key" name="key" value="" /> (<a href="http://api.jaiku.com/key" title="Log in first">here!</a>)<br />
 			<input type="submit" id="submit" name="submit" value="Send" />
 		</form>

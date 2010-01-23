@@ -3,4 +3,32 @@
 $jaiku_username = "username";
 $jaiku_apikey = "apikey";
 
+// MySQL Connection
+$mysql_server = "localhost";
+$mysql_database = "database";
+$mysql_user = "user";
+$mysql_password = "password";
+ 
+$conn = mysql_connect($mysql_server, $mysql_user, $mysql_password);
+mysql_select_db($mysql_database, $conn);
+mysql_query("SET NAMES utf8");
+
+if(!isset($db_escape_disable)){
+function db_escape ($post)
+{
+   if (is_string($post)) {
+     if (get_magic_quotes_gpc()) {
+        $post = stripslashes($post);
+     }
+     return mysql_real_escape_string($post);
+   }
+   
+   foreach ($post as $key => $val) {
+      $post[$key] = db_escape($val);
+   }
+   
+   return $post;
+}
+}
+
 ?>
