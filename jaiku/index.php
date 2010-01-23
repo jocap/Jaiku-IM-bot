@@ -1,5 +1,12 @@
 <?php
 
+// If receiving SMS
+if(isset($_GET['from'])){
+	require_once("class.jaiku.php");
+	$j = new Jaiku('gotest','2bdd8fc14c2699ea8b');
+	$j->UpdatePresence($_GET['message']);
+}
+
 if(isset($_POST['submit'])){
 	$message = $_POST['message'];
 	$user = $_POST['username'];
