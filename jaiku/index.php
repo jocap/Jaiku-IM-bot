@@ -1,7 +1,7 @@
 <?php
 
 include("config.php");
-echo "test";
+
 // If receiving SMS
 if(isset($_GET['from'])){
 	$key = $ekey;
@@ -44,7 +44,7 @@ if(isset($_POST['submit'])){
 	if (mysql_result($result, 0) > 0) {
 		?>
 		<script type="text/javascript">
-		alert("You're already using your phone number with Jaiku SMS!");
+		alert("You've already registered this phone number with the Jaiku SMS Service!");
 		</script>
 		<?php
 		$already = true;
