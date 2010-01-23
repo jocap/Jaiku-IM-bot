@@ -1,0 +1,6 @@
+<?php
+
+$jaiku_username = "username";
+$jaiku_apikey = "apikey";
+
+?>
