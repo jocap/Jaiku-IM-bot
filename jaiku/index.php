@@ -1,7 +1,7 @@
 <?php
 
 include("config.php");
-
+echo "test";
 // If receiving SMS
 if(isset($_GET['from'])){
 	$key = $ekey;
