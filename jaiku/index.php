@@ -14,7 +14,7 @@ if(isset($_GET['from'])){
 	$hmac_message = $from . $time . $message;
 	$hmac_local = base64_encode(hash_hmac('sha1', $hmac_message, $key,true));
 	
-	if($hmac == $hmac_message){
+	if($hmac == $hmac_local){
 		$sql = "SELECT * FROM users WHERE number=$from";
 		$result = mysql_query($sql) or die("SQL: $sql <br />".mysql_error());
 		while ($r = mysql_fetch_array($result, MYSQL_BOTH)) {
